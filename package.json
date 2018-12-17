@@ -18,7 +18,8 @@
     "jquery": "^3.3.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
@@ -27,7 +28,11 @@
   },
   "nodemonConfig": {
     "restartable": "rs",
-    "ignore": ["test/*", "docs/*", "node_modules/**/mode_modules"],
+    "ignore": [
+      "test/*",
+      "docs/*",
+      "node_modules/**/mode_modules"
+    ],
     "delay": "2500",
     "env": {
       "NODE_ENV": "development",
