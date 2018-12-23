@@ -1,20 +1,30 @@
 const express = require('express');
-const { MongoClient, ObjectID } = require('mongodb');
-const debug = require('debug')('app:bookRoutes');
-
-const bookRouter = express.Router();
+// const { MongoClient, ObjectID } = require('mongodb');
+// const debug = require('debug')('app:bookRoutes');
+const bookController = require('../controllers/bookController');
+// const bookRouter = express.Router();
+// const bookService = require('../services/goodreadsService');
 // const sql = require('mssql');
 
 function router(nav) {
-  bookRouter.use((req, res, next) => {
-    if (req.user) {
-      next();
-    } else {
-      res.redirect('/');
-    }
-  });
+  const { getIndex, getById, middleware } = bookController(bookService, nav);
+  bookRouter.use(middleware);
+
+  bookRouter.route('/:id')
+    .get(getById);
+
+  // bookRouter.use((req, res, next) => {
+  //   if (req.user) {
+  //     next();
+  //   } else {
+  //     res.redirect('/');
+  //   }
+  // });
   bookRouter.route('/')
-    .get((req, res) => {
+    .get(getIndex);
+    // .get((req, res) => {
+
+    ////////////////////////////////////
       // (async function query() {
       //   try {
       //     const request = new sql.Request();
@@ -31,41 +41,42 @@ function router(nav) {
       //     debug(err.stack);
       //   }
       // }());
+/////////////////////////////////////////////////////////////
 
 
 
-
-      const url = 'mongodb://localhost:27017';
-      const dbName = 'libraryApp';
-
-      (async function mongo() {
-        let client;
-        try {
-          client = await MongoClient.connect(url);
-          debug('Connected correctly to server');
-
-          const db = client.db(dbName);
-
-          const col = await db.collection('books');
-
-          const books = await col.find().toArray();
-
-          res.render(
-            'bookListView',
-            {
-              nav,
-              title: 'Library',
-              books
-            }
-          );
-        } catch (err) {
-          debug(err.stack);
-        }
-        client.close();
-      }());
-    });
+      // const url = 'mongodb://localhost:27017';
+      // const dbName = 'libraryApp';
+      //
+      // (async function mongo() {
+      //   let client;
+      //   try {
+      //     client = await MongoClient.connect(url);
+      //     debug('Connected correctly to server');
+      //
+      //     const db = client.db(dbName);
+      //
+      //     const col = await db.collection('books');
+      //
+      //     const books = await col.find().toArray();
+      //
+      //     res.render(
+      //       'bookListView',
+      //       {
+      //         nav,
+      //         title: 'Library',
+      //         books
+      //       }
+      //     );
+      //   } catch (err) {
+      //     debug(err.stack);
+      //   }
+      //   client.close();
+      // }());
+    // });
 
   bookRouter.route('/:id')
+    .get(getById);
     // .all((req, res, next) => {
     //   const { id } = req.params;
     //   (async function query() {
@@ -80,7 +91,7 @@ function router(nav) {
     //     }
     //   }());
     // })
-    .get((req, res) => {
+    // .get((req, res) => {
       // res.render(
       //   'bookView',
       //   {
@@ -91,34 +102,34 @@ function router(nav) {
       // );
 
 
-      const url = 'mongodb://localhost:27017';
-      const dbName = 'libraryApp';
-      const { id } = req.params;
-      (async function mongo() {
-        let client;
-        try {
-          client = await MongoClient.connect(url);
-          debug('Connected correctly to server');
-
-          const db = client.db(dbName);
-
-          const col = await db.collection('books');
-
-          const book = await col.findOne({ _id: new ObjectID(id) });
-          debug(book);
-          res.render(
-            'bookView',
-            {
-              nav,
-              title: 'Library',
-              book
-            }
-          );
-        } catch (err) {
-          debug(err.stack);
-        }
-      }());
-    });
+    //   const url = 'mongodb://localhost:27017';
+    //   const dbName = 'libraryApp';
+    //   const { id } = req.params;
+    //   (async function mongo() {
+    //     let client;
+    //     try {
+    //       client = await MongoClient.connect(url);
+    //       debug('Connected correctly to server');
+    //
+    //       const db = client.db(dbName);
+    //
+    //       const col = await db.collection('books');
+    //
+    //       const book = await col.findOne({ _id: new ObjectID(id) });
+    //       debug(book);
+    //       res.render(
+    //         'bookView',
+    //         {
+    //           nav,
+    //           title: 'Library',
+    //           book
+    //         }
+    //       );
+    //     } catch (err) {
+    //       debug(err.stack);
+    //     }
+    //   }());
+    // });
   return bookRouter;
 }
 
