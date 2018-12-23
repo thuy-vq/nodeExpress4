@@ -25,12 +25,12 @@
       </button>
       <a href="/" class="navbar-brand">Home</a>
     </div>
-    <nav class="collapse navbar-collapse" role="navigation">
-      <ul class="nav navbar-nav">
+    <nav class="collapse navbar-collapse show" role="navigation">
+      <ul class="nav navbar-nav" style="display: block;">
         <%for(let i=0; i<nav.length; i++) {%>
-        <li>
+        <li style="display: inline-block;">
           <a href="<%=nav[i].link%>"><%=nav[i].title%></a>
-        </li>
+        </li style="display: inline-block;">
         <%}%>
       </ul>
       <ul class="nav navbar-right navbar-nav">
